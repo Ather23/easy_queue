@@ -8,7 +8,6 @@ use std::sync::Arc;
 use std::sync::Mutex;
 use axum::{ routing::{ get, post }, Router };
 use serde::{ Deserialize, Serialize };
-
 use web::*;
 
 #[derive(Clone)]
@@ -19,11 +18,6 @@ struct AppState {
 #[derive(Clone, Debug)]
 struct EasyQueue {
     queue: HashMap<String, VecDeque<String>>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct GetQueueRequest {
-    queue_name: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
