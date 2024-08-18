@@ -1,4 +1,5 @@
 #![forbid(unsafe_code)]
+use tracing::{ info, Level };
 
 mod web;
 
@@ -28,6 +29,8 @@ struct Error {
 #[tokio::main]
 async fn main() {
     tracing_subscriber::fmt::init();
+    info!("Starting server...");
+
     let empty_map: HashMap<String, VecDeque<String>> = HashMap::new();
     let state = AppState {
         queues: Arc::new(Mutex::new(EasyQueue { queue: empty_map })),
@@ -39,8 +42,11 @@ async fn main() {
         .route("/pop_message/:queue_name", post(pop_message))
         .route("/message_count/:queue_name", get(get_queue_msg_count))
         .with_state(state);
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-    axum::serve(listener, app).await.unwrap();
+    if let Ok(listener) = tokio::net::TcpListener::bind("0.0.0.0:3000").await {
+        axum::serve(listener, app).await.unwrap();
+    } else {
+        panic!("Could establish listener")
+    }
 }
 
 async fn health() -> &'static str {
