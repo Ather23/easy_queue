@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  easy_queue:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      RUST_LOG: "info"
