@@ -22,6 +22,6 @@ COPY --from=builder /easy_queue/target/release/easy_queue  /app
 
 ENV RUST_LOG=info
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["./easy_queue"]
