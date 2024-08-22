@@ -13,12 +13,12 @@ use web::*;
 
 #[derive(Clone)]
 struct AppState {
-    queues: Arc<Mutex<EasyQueue>>,
+    stream_hashmap: Arc<Mutex<StreamingMap>>,
 }
 
 #[derive(Clone, Debug)]
-struct EasyQueue {
-    queue: HashMap<String, VecDeque<String>>,
+struct StreamingMap {
+    hashmap: HashMap<String, VecDeque<String>>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -33,7 +33,7 @@ async fn main() {
 
     let empty_map: HashMap<String, VecDeque<String>> = HashMap::new();
     let state = AppState {
-        queues: Arc::new(Mutex::new(EasyQueue { queue: empty_map })),
+        stream_hashmap: Arc::new(Mutex::new(StreamingMap { hashmap: empty_map })),
     };
     let app = Router::new()
         .route("/health", get(health))
